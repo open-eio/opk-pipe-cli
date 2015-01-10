@@ -1,3 +1,5 @@
+Comments on this draft [here](http://publiclab.org/notes/rjstatic/11-19-2014/first-draft-on-architecture-of-sensor-plugins-reservoir-plugins-and-pipes-for-the-open-pipe-kit).
+
 ###What I want to do
 
 In the first phase of the Open Pipe Kit development we'll build the engine of the car while the second phase will focus on the building the dashboard for end users to interact with. By the end of phase one we should have a working engine that you can ...
