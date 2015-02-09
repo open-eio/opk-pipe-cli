@@ -1,10 +1,16 @@
 {
-  "name": "Pipe-Engine",
-  "version": "0.0.1",
+  "name": "thingpipe",
+  "version": "0.0.2",
   "description": "engine for OPK",
   "main": "node app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "thing": "thing.js"
+  },
+  "dependencies": {
+        "commander": "^2.3.0"
   },
   "repository": {
     "type": "git",
