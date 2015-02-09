@@ -1,3 +1,23 @@
+## Current stuff
+
+### Example of installing and using `pipething` `0.0.5`
+`npm` command is a dependency (install nodejs).
+
+```
+$ npm install -g pipething
+$ mkdir MyPipe
+$ cd MyPipe
+$ pipe init
+$ npm install pipething_random
+$ pipe thing pipething_random
+$ npm install pipething_logger
+$ pipe reservoir pipething_logger
+$ pipe interval 5000
+$ pipe watch
+```
+
+
+## Older stuff
 Comments on this draft [here](http://publiclab.org/notes/rjstatic/11-19-2014/first-draft-on-architecture-of-sensor-plugins-reservoir-plugins-and-pipes-for-the-open-pipe-kit).
 
 ###What I want to do
