@@ -10,7 +10,7 @@ var hello = function () {
 }
 
 var log = function () {
-  exec('./node_modules/' + config.sensor + '/poll', function(err, stdout, stderr) {
+  exec('./node_modules/' + config.thing + '/poll', function(err, stdout, stderr) {
     if (err) console.log(err)
     if (stdout) console.log(stdout)
     if (stderr) console.log(stderr)
@@ -26,7 +26,7 @@ var send = function (message) {
 }
 
 var poll = function () {
-  exec('./node_modules/' + config.sensor + '/poll', function(err, stdout, stderr) {
+  exec('./node_modules/' + config.thing + '/poll', function(err, stdout, stderr) {
     if (err) console.log(err)
     if (stdout) console.log(stdout)
     if (stderr) console.log(stderr)
@@ -42,9 +42,9 @@ var setReservoir = function (reservoirName) {
   })
 }
 
-var setSensor = function (sensorName) {
-  console.log('setting default sensor to %s', sensorName);
-  config.sensor = sensorName
+var setThing = function (thingName) {
+  console.log('setting default thing to %s', thingName);
+  config.thing = thingName
   fs.writeFile('config.json', JSON.stringify(config), function(err) {
     if (err) return console.log(err)
     console.log('done')
@@ -63,8 +63,8 @@ var init = function () {
 
 program
   .version('0.0.1')
-  .command('sensor <sensorName>')
-  .action(setSensor)
+  .command('thing <thingName>')
+  .action(setThing)
 
 program
   .version('0.0.1')
