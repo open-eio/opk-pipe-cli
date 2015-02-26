@@ -4,7 +4,19 @@ var program = require('commander');
 var fs = require('fs')
 var exec = require('child_process').exec;
 
-var config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
+var config = {}
+
+var bootstrap = function(callback) {
+  config = fs.readFile('config.json', {'encoding': 'utf8'}, function(err, data) {
+    if (err) {
+      console.log('No config.json found')
+      config = false
+      return callback()
+    }
+    config = JSON.parse(data)
+    callback()
+  })
+}
 
 var hello = function () {
   console.log('Hello. I am thing.')
@@ -74,14 +86,45 @@ var setWatchInterval = function (intervalLength) {
 }
 
 var init = function () {
-  console.log('initializing your pipe')
-  fs.writeFile('config.json', '{}', function(err) {
-    if (err) {
-      console.log(err)
+  bootstrap(function() {
+    console.log('initializing your pipe')
+    if (config !== false) {
+      return console.log('Aborting. Found an active config.json file.')
     }
-    console.log('config.json written')
+    var writeFile = function(callback) {
+      fs.writeFile('config.json', '{}', function(err) {
+        if (err) {
+          console.log(err)
+        }
+        console.log('config.json written')
+        callback()
+      })
+    }
+    var makeDriversDirectory = function(callback) {
+      exec('mkdir drivers', function (err) {
+        if (err) console.log(err)
+        console.log('created drivers directory')
+        callback()
+      })
+    }
+    // go
+    writeFile(function() {
+      makeDriversDirectory(function() {
+        console.log('done')
+      })
+    })
   })
 }
+
+var clone = function (repoLocation) {
+  eval('cd drivers; git clone ' + repoLocation, function(err) {
+    if (err) console.log(err)
+  })
+}
+
+program
+  .command('clone <repoLocation>')
+  .action(clone)
 
 program
   .version('0.0.1')
