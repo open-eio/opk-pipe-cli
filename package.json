@@ -1,8 +1,8 @@
 {
-  "name": "thingpipe",
+  "name": "pipe-cli",
   "version": "0.0.5",
-  "description": "engine for OPK",
-  "main": "node app.js",
+  "description": "Thin command-line interface for Pipe Drivers. Will pull data from one Driver and push it to another.",
+  "main": "pipe.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,15 +14,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/open-eie/Pipe-Engine.git"
+    "url": "https://github.com/open-eie/pipe-cli.git"
   },
   "keywords": [
     "sensors"
   ],
-  "author": "open-eie.io",
+  "author": "R.J. Steinert",
   "license": "AGPL3",
   "bugs": {
-    "url": "https://github.com/open-eie/Pipe-Engine/issues"
+    "url": "https://github.com/open-eio/pipe-cli/issues"
   },
-  "homepage": "https://github.com/open-eie/Pipe-Engine"
+  "homepage": "https://github.com/open-eio/pipe-cli"
 }
