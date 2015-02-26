@@ -4,12 +4,13 @@ var program = require('commander');
 var fs = require('fs')
 var exec = require('child_process').exec;
 
+var config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
+
 var hello = function () {
   console.log('Hello. I am thing.')
 }
 
 var watch = function () {
-  var config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
   var interval = parseInt(config.interval)
   setInterval(function() {
     exec('pipe send `pipe poll`', function(err, stdout, stderr) {
@@ -22,7 +23,6 @@ var watch = function () {
 }
 
 var log = function () {
-  var config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
   exec('./node_modules/' + config.thing + '/poll', function(err, stdout, stderr) {
     if (err) console.log(err)
     if (stdout) console.log(stdout)
@@ -31,7 +31,6 @@ var log = function () {
 }
 
 var send = function (message) {
-  var config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
   exec('./node_modules/' + config.reservoir + '/send "' + message + '"', function(err, stdout, stderr) {
     if (err) console.log(err)
     if (stdout) console.log(stdout)
@@ -40,7 +39,6 @@ var send = function (message) {
 }
 
 var poll = function () {
-  var config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
   exec('./node_modules/' + config.thing + '/poll', function(err, stdout, stderr) {
     if (err) console.log(err)
     if (stdout) console.log(stdout)
@@ -49,7 +47,6 @@ var poll = function () {
 }
 
 var setReservoir = function (reservoirName) {
-  var config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
   console.log('setting default reservoir to %s', reservoirName);
   config.reservoir = reservoirName
   fs.writeFile('config.json', JSON.stringify(config), function(err) {
@@ -59,7 +56,6 @@ var setReservoir = function (reservoirName) {
 }
 
 var setThing = function (thingName) {
-  var config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
   console.log('setting default thing to %s', thingName);
   config.thing = thingName
   fs.writeFile('config.json', JSON.stringify(config), function(err) {
@@ -69,7 +65,6 @@ var setThing = function (thingName) {
 }
 
 var setWatchInterval = function (intervalLength) {
-  var config = JSON.parse(fs.readFileSync('config.json', 'utf8'))
   console.log('setting interval to %s', intervalLength);
   config.interval = intervalLength
   fs.writeFile('config.json', JSON.stringify(config), function(err) {
