@@ -117,8 +117,10 @@ var init = function () {
 }
 
 var clone = function (repoLocation) {
-  eval('cd drivers; git clone ' + repoLocation, function(err) {
+  console.log('cloning...')
+  exec('cd drivers; git clone ' + repoLocation, function(err) {
     if (err) console.log(err)
+    console.log('done')
   })
 }
 
