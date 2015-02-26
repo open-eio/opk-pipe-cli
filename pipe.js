@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 
-var program = require('commander');
+var program = require('commander')
+program.allowUnknownOption(true)
 var fs = require('fs')
-var exec = require('child_process').exec;
+var exec = require('child_process').exec
+
+//console.log(process.argv)
 
 var config = {}
 
@@ -117,16 +120,54 @@ var init = function () {
 }
 
 var clone = function (repoLocation) {
-  console.log('cloning...')
-  exec('cd drivers; git clone ' + repoLocation, function(err) {
-    if (err) console.log(err)
-    console.log('done')
+  var child = exec('cd drivers; git clone ' + repoLocation)
+  child.stdout.on('data', function(data) {
+      console.log(data);
+  })
+  child.stderr.on('data', function(data) {
+      console.log(data);
+  })
+  child.on('close', function(code) {
+      //console.log('closing code: ' + code);
   })
 }
 
+var driver = function (driverName) {
+  var args = process.argv
+  args.shift()
+  args.shift()
+  args.shift()
+  args.shift()
+  var cmd = './drivers/' + driverName + '/' + args.join(' ')
+  console.log('running: ' + cmd)
+  var child = exec(cmd)
+  child.stdout.on('data', function(data) {
+    console.log(data);
+  })
+  child.stderr.on('data', function(data) {
+    console.log(data);
+  })
+  child.on('close', function(code) {
+    // console.log('done')
+  })
+}
+
+var test = function() {
+
+}
+
+
+program
+  .command('test')
+  .action(test)
+  
 program
   .command('clone <repoLocation>')
   .action(clone)
+
+program
+  .command('driver <driverName>')
+  .action(driver)
 
 program
   .version('0.0.1')
