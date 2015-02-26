@@ -85,29 +85,64 @@ var driver = function (driverName) {
   })
 }
 
-var test = function() {
+var config = function(key, value) {
+  bootstrap(function() {
+    var props = key.split('.')
+    //console.log(config)
+    if (!config.hasOwnProperty(props[0])) {
+      config[props[0]] = {}
+    }
+    //console.log(config)
+    if (props[1] && !config[props[0]].hasOwnProperty(props[1])) {
+      config[props[0]][props[1]] = {}
+    }
+    //console.log(config)
+    if (props[2] && !config[props[0]][props[1]].hasOwnProperty(props[2])) {
+      config[props[0]][props[1]][props[2]] = {}
+    }
+    //console.log(config)
+    eval('config.' + key + ' = ' + value)
+    //console.log(config)
+    fs.writeFile('config.json', JSON.stringify(config), function(err) {
+      if (err) return console.log(err)
+      console.log('done')
+    })
+  })
+
+}
+
+var pump = function(operation) {
 
 }
 
 var hello = function () {
-  console.log('Hello. I am thing.')
+  console.log('Hello. I am pipe. Type `pipe --help` to get more info.')
 }
 
 program
   .command('init')
+  .description('create a `config.json` file and a `drivers` folder in the directory you are in')
   .action(init)
 
 program
   .command('clone <repoLocation>')
+  .description('clone a git repository into the drivers folder')
   .action(clone)
 
 program
+  .command('config <key> <value>')
+  .description('add or modify a value in the config.json file')
+  .action(config)
+
+program
   .command('driver <driverName>')
+  .description('shortcut command that translates to `./drivers/<driverName>/<command> [<option> <option> ...]`')
   .action(driver)
 
 program
-  .command('test')
-  .action(test)
+  .command('pump <operation>')
+  .description('configure the pump by setting the pump.interval value in config to your desired milliseconds and then use `pipe pump start`')
+  .action(pump)
 
 program
   .command('*')
