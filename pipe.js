@@ -112,6 +112,36 @@ var config = function(key, value) {
 }
 
 var pump = function(operation) {
+  switch (operation) {
+    case 'start':
+      if (!config.hasOwnProperty('interval')) return console.log('Aborting. Pick an interval by running `pipe config pump.interval <numberOfMilliseconds>`')
+      var pullCmd = './drivers/' + config.pull + '/pull'
+      if (config.hasOwnProperty('drivers') && config.drivers.hasOwnProperty(config.pull)) {
+        config.drivers[config.pull].forEach(function(value, index) {
+            pullCmd += '--' + index + '=' + value
+        })
+      }
+      var pushCmd = './drivers/' + config.push + '/push'
+      if (config.hasOwnProperty('drivers') && config.drivers.hasOwnProperty(config.push)) {
+        config.drivers[config.push].forEach(function(value, index) {
+            pushCmd += '--' + index + '=' + value
+        })
+      }
+      var pumpCmd = pushCmd + '`' + pullCmd + '`'
+      console.log('Every ' + config.interval + ' I will run: ' + pumpCmd)
+      setInterval(function() {
+        var child = exec(pumpCmd)
+        child.stdout.on('data', function(data) {
+          console.log(data);
+        })
+        child.stderr.on('data', function(data) {
+          console.log(data);
+        })
+        child.on('close', function(code) {
+          //console.log('closing code: ' + code);
+        })
+      }, config.pump.interval)
+  }
 
 }
 
