@@ -1,13 +1,13 @@
 {
   "name": "pipe-cli",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "Thin command-line interface for Pipe Drivers. Will pull data from one Driver and push it to another.",
   "main": "pipe.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "pipe": "pipe.js"
+    "pipe": "cli.js"
   },
   "dependencies": {
         "commander": "^2.3.0"
