@@ -1,8 +1,8 @@
 {
-  "name": "pipe-cli",
+  "name": "opk-pipe-cli",
   "version": "0.1.0",
   "description": "Thin command-line interface for Pipe Drivers. Will pull data from one Driver and push it to another.",
-  "main": "pipe.js",
+  "main": "cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/open-eie/pipe-cli.git"
+    "url": "https://github.com/open-eie/opk-pipe-cli.git"
   },
   "keywords": [
     "sensors"
@@ -22,7 +22,7 @@
   "author": "R.J. Steinert",
   "license": "AGPL3",
   "bugs": {
-    "url": "https://github.com/open-eio/pipe-cli/issues"
+    "url": "https://github.com/open-eio/opk-pipe-cli/issues"
   },
-  "homepage": "https://github.com/open-eio/pipe-cli"
+  "homepage": "https://github.com/open-eio/opk-pipe-cli"
 }
