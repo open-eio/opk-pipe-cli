@@ -4,7 +4,44 @@ var program = require('commander')
 program.allowUnknownOption(true)
 var fs = require('fs')
 var exec = require('child_process').exec
+var syncExec = require('sync-exec');
 var config;
+
+program
+  .command('init')
+  .description('create a `config.json` file and a `drivers` folder in the directory you are in')
+  .action(init)
+
+program
+  .command('config [key] [value]')
+  .description('add or modify a value in the config.json file')
+  .action(config)
+
+program
+  .install('install <package url>')
+  .description('Install a package')
+  .action(require('./lib/install.js'))
+
+program
+  .command('push <data>')
+  .description('Push data using a configured Pipe')
+  .action(push)
+
+program
+  .command('pull')
+  .option('--verbose')
+  .description('Pull data using a configured Pipe')
+  .action(pull)
+
+program
+  .command('pump [operation]')
+  .description('configure the pump by setting the pump.interval value in config to your desired milliseconds and then use `pipe pump start`')
+  .action(pump)
+
+program
+  .version('0.1.0')
+  .option('--verbose')
+  .parse(process.argv);
 
 var bootstrap = function(callback) {
   fs.readFile('config.json', {'encoding': 'utf8'}, function(err, data) {
@@ -39,6 +76,7 @@ var init = function () {
     })
   })
 }
+
 
 var config = function(key, value) {
   bootstrap(function() {
@@ -77,44 +115,6 @@ var push = function(data) {
   })
 }
 
-var pull = function() {
-  bootstrap(function() {
-    // @todo Check for dumn stuff
-    var pullCmd = './' + config.pipe.pull + '/pull'
-    for (key in config[config.pipe.pull]) {
-        pullCmd += ' --' + key + ' "' + config[config.pipe.pull][key] + '"'
-    }
-    if (program.verbose) console.log("Running: " + pullCmd)
-    var child = exec(pullCmd)
-    child.stdout.on('data', function(data) {
-      console.log(data);
-    })
-    child.stderr.on('data', function(data) {
-      console.log(data);
-    })
-    child.on('close', function(code) {
-      //console.log('closing code: ' + code);
-    })
-  })
-}
-
-var pump = function() {
-  bootstrap(function() {
-    var child = exec('pipe push `pipe pull`')
-    child.stdout.on('data', function(data) {
-      console.log(data);
-    })
-    child.stderr.on('data', function(data) {
-      console.log(data);
-    })
-    child.on('close', function(code) {
-      if (config.hasOwnProperty('pump') && config.pump.hasOwnProperty('interval')) {
-        console.log('Waiting ' + config.pump.interval + ' milliseconds.')
-        setTimeout(pump, config.pump.interval)
-      }
-    })
-  })
-}
 
 if (!process.argv[2]) {
   var child = exec('pipe --help')
@@ -123,33 +123,4 @@ if (!process.argv[2]) {
   })
 }
 
-program
-  .command('init')
-  .description('create a `config.json` file and a `drivers` folder in the directory you are in')
-  .action(init)
 
-program
-  .command('config [key] [value]')
-  .description('add or modify a value in the config.json file')
-  .action(config)
-
-program
-  .command('push <data>')
-  .description('Push data using a configured Pipe')
-  .action(push)
-
-program
-  .command('pull')
-  .option('--verbose')
-  .description('Pull data using a configured Pipe')
-  .action(pull)
-
-program
-  .command('pump [operation]')
-  .description('configure the pump by setting the pump.interval value in config to your desired milliseconds and then use `pipe pump start`')
-  .action(pump)
-
-program
-  .version('0.1.0')
-  .option('--verbose')
-  .parse(process.argv);
